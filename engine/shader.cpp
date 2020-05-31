@@ -31,6 +31,7 @@ Shader::Shader(const std::string& fileName)
 	m_uniforms[1] = glGetUniformLocation(m_program, "Normal");
 	m_uniforms[2] = glGetUniformLocation(m_program, "lightDirection");
 	m_uniforms[3] = glGetUniformLocation(m_program, "lightColor");
+	m_uniforms[4] = glGetUniformLocation(m_program, "tex");
 }
 
 Shader::~Shader()

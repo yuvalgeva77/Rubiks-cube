@@ -1,16 +1,15 @@
 #include <Windows.h>
 #include <iostream>
-#include "display.h"
+#include "inputManager.h"
 #include "mesh.h"
 #include "shader.h"
-#include "inputManager.h"
+#include "texture.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
-using namespace glm;
 
-static const int DISPLAY_WIDTH = 800;
-static const int DISPLAY_HEIGHT = 800;
+
+using namespace glm;
 
 int main(int argc, char** argv)
 {
@@ -18,35 +17,35 @@ int main(int argc, char** argv)
 	
 	Vertex vertices[] =
 	{
-		Vertex(glm::vec3(-1, -1, -1), glm::vec2(1, 0), glm::vec3(0, 0, -1),glm::vec3(0, 0, 1)),
+				Vertex(glm::vec3(-1, -1, -1), glm::vec2(1, 0), glm::vec3(0, 0, -1),glm::vec3(0, 0, 1)),
 		Vertex(glm::vec3(-1, 1, -1), glm::vec2(0, 0), glm::vec3(0, 0, -1),glm::vec3(0, 0, 1)),
 		Vertex(glm::vec3(1, 1, -1), glm::vec2(0, 1), glm::vec3(0, 0, -1),glm::vec3(0, 0, 1)),
 		Vertex(glm::vec3(1, -1, -1), glm::vec2(1, 1), glm::vec3(0, 0, -1),glm::vec3(0, 0, 1)),
 
-		Vertex(glm::vec3(-1, -1, 1), glm::vec2(1, 0), glm::vec3(0, 0, 1),glm::vec3(0, 0, 1)),
-		Vertex(glm::vec3(-1, 1, 1), glm::vec2(0, 0), glm::vec3(0, 0, 1),glm::vec3(0, 0, 1)),
-		Vertex(glm::vec3(1, 1, 1), glm::vec2(0, 1), glm::vec3(0, 0, 1),glm::vec3(0, 0, 1)),
-		Vertex(glm::vec3(1, -1, 1), glm::vec2(1, 1), glm::vec3(0, 0, 1),glm::vec3(0, 0, 1)),
+		Vertex(glm::vec3(-1, -1, 1), glm::vec2(1, 0), glm::vec3(0, 0, 1),glm::vec3(0.970,0.394,0.945)),
+		Vertex(glm::vec3(-1, 1, 1), glm::vec2(0, 0), glm::vec3(0, 0, 1),glm::vec3(0.970,0.394,0.945)),
+		Vertex(glm::vec3(1, 1, 1), glm::vec2(0, 1), glm::vec3(0, 0, 1),glm::vec3(0.970,0.394,0.945)),
+		Vertex(glm::vec3(1, -1, 1), glm::vec2(1, 1), glm::vec3(0, 0, 1),glm::vec3(0.970,0.394,0.945)),
 
 		Vertex(glm::vec3(-1, -1, -1), glm::vec2(0, 1), glm::vec3(0, -1, 0),glm::vec3(0, 1, 0)),
 		Vertex(glm::vec3(-1, -1, 1), glm::vec2(1, 1), glm::vec3(0, -1, 0),glm::vec3(0, 1, 0)),
 		Vertex(glm::vec3(1, -1, 1), glm::vec2(1, 0), glm::vec3(0, -1, 0),glm::vec3(0, 1, 0)),
 		Vertex(glm::vec3(1, -1, -1), glm::vec2(0, 0), glm::vec3(0, -1, 0),glm::vec3(0, 1, 0)),
 
-		Vertex(glm::vec3(-1, 1, -1), glm::vec2(0, 1), glm::vec3(0, 1, 0),glm::vec3(0, 1, 0)),
-		Vertex(glm::vec3(-1, 1, 1), glm::vec2(1, 1), glm::vec3(0, 1, 0),glm::vec3(0, 1, 0)),
-		Vertex(glm::vec3(1, 1, 1), glm::vec2(1, 0), glm::vec3(0, 1, 0),glm::vec3(0, 1, 0)),
-		Vertex(glm::vec3(1, 1, -1), glm::vec2(0, 0), glm::vec3(0, 1, 0),glm::vec3(0, 1, 0)),
+		Vertex(glm::vec3(-1, 1, -1), glm::vec2(0, 1), glm::vec3(0, 1, 0),glm::vec3(0.906,0.915,0.075)),
+		Vertex(glm::vec3(-1, 1, 1), glm::vec2(1, 1), glm::vec3(0, 1, 0),glm::vec3(0.906,0.915,0.075)),
+		Vertex(glm::vec3(1, 1, 1), glm::vec2(1, 0), glm::vec3(0, 1, 0),glm::vec3(0.906,0.915,0.075)),
+		Vertex(glm::vec3(1, 1, -1), glm::vec2(0, 0), glm::vec3(0, 1, 0),glm::vec3(0.906,0.915,0.075)),
 
 		Vertex(glm::vec3(-1, -1, -1), glm::vec2(1, 1), glm::vec3(-1, 0, 0),glm::vec3(1, 0, 0)),
 		Vertex(glm::vec3(-1, -1, 1), glm::vec2(1, 0), glm::vec3(-1, 0, 0),glm::vec3(1, 0, 0)),
 		Vertex(glm::vec3(-1, 1, 1), glm::vec2(0, 0), glm::vec3(-1, 0, 0),glm::vec3(1, 0, 0)),
 		Vertex(glm::vec3(-1, 1, -1), glm::vec2(0, 1), glm::vec3(-1, 0, 0),glm::vec3(1, 0, 0)),
 
-		Vertex(glm::vec3(1, -1, -1), glm::vec2(1, 1), glm::vec3(1, 0, 0),glm::vec3(1, 0, 0)),
-		Vertex(glm::vec3(1, -1, 1), glm::vec2(1, 0), glm::vec3(1, 0, 0),glm::vec3(1, 0, 0)),
-		Vertex(glm::vec3(1, 1, 1), glm::vec2(0, 0), glm::vec3(1, 0, 0),glm::vec3(1, 0, 0)),
-		Vertex(glm::vec3(1, 1, -1), glm::vec2(0, 1), glm::vec3(1, 0, 0),glm::vec3(1, 0, 0))
+		Vertex(glm::vec3(1, -1, -1), glm::vec2(1, 1), glm::vec3(1, 0, 0),glm::vec3(0.410,0.112,0.374)),
+		Vertex(glm::vec3(1, -1, 1), glm::vec2(1, 0), glm::vec3(1, 0, 0),glm::vec3(0.410,0.112,0.374)),
+		Vertex(glm::vec3(1, 1, 1), glm::vec2(0, 0), glm::vec3(1, 0, 0),glm::vec3(0.410,0.112,0.374)),
+		Vertex(glm::vec3(1, 1, -1), glm::vec2(0, 1), glm::vec3(1, 0, 0),glm::vec3(0.410,0.112,0.374))
 	};
 
 	unsigned int indices[] = {0, 1, 2,
@@ -67,43 +66,30 @@ int main(int argc, char** argv)
 							  22, 21, 20,
 							  23, 22, 20
 	                          };
-    //Mesh mesh(vertices, sizeof(vertices)/sizeof(vertices[0]), indices, sizeof(indices)/sizeof(indices[0]));
-	Mesh monkey("./res/meshes/monkeyNoUV.obj");
+    Mesh mesh(vertices, sizeof(vertices)/sizeof(vertices[0]), indices, sizeof(indices)/sizeof(indices[0]));
 	Shader shader("./res/shaders/basicShader");
-	
-	vec3 pos = vec3(0,0,-5);
-	vec3 forward = glm::vec3(0.0f, 0.0f, 1.0f);
-	vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-	mat4 P = glm::perspective(60.0f, (float)DISPLAY_WIDTH/(float)DISPLAY_HEIGHT, 0.1f, 100.0f);
-	mat4 M = glm::rotate(45.0f,vec3(1,1,1));//glm::mat4(1);
-	P = P * glm::lookAt(pos, pos + forward, up);
-	mat4 MVP = P*M;
-	glfwSetKeyCallback(display.m_window,key_callback);
-
-
-	while(!glfwWindowShouldClose(display.m_window))
+	RCube rcube(3, &mesh, &shader);
+	Data data(&rcube, &display);
+	Texture tex("./res/textures/plane.png");
+	tex.Bind(0);
+	glfwSetWindowUserPointer(display.m_window, (void *)&data);
+	glfwSetKeyCallback(display.m_window, key_callback);
+	glfwSetMouseButtonCallback(display.m_window, mouse_callback);
+	glfwSetCursorPosCallback(display.m_window, cursor_callback);
+	glfwSetScrollCallback(display.m_window, scroll_callback);
+	display.Clear(1.0f, 1.0f, 1.0f, 1.0f);
+	rcube.render();
+	display.SwapBuffers();
+	int i = 0;
+	rcube.render();
+	glfwSetInputMode(display.m_window, GLFW_STICKY_KEYS, 0);
+	while (!glfwWindowShouldClose(display.m_window))
 	{
-		Sleep(3);
-		M = glm::rotate(M,0.1f,up);
-		MVP = P*M;
-		display.Clear(1.0f, 1.0f, 1.0f, 1.0f);
-
-		shader.Bind();
-		shader.Update(MVP,M);
-
-		monkey.Draw();
-		//mesh.Draw();
-
-
-		display.SwapBuffers();
-
 		glfwPollEvents();
 	}
 
 	return 0;
 }
-
-
 
 
 

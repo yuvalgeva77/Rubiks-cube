@@ -68,13 +68,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="Data.h" />
     <ClInclude Include="debugTimer.h" />
     <ClInclude Include="display.h" />
     <ClInclude Include="inputManager.h" />
+    <ClInclude Include="Location.h" />
+    <ClInclude Include="RCube.h" />
+    <ClInclude Include="texture.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Data.cpp" />
     <ClCompile Include="display.cpp" />
+    <ClCompile Include="Location.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RCube.cpp" />
+    <ClCompile Include="texture.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\engine\engine.vcxproj">
